@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototype.EmployeeService.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototype.UI", "Prototype.UI\Prototype.UI.csproj", "{703D2385-6560-4946-AFFC-4A76CD1B033A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{C58A4CDE-3D15-4678-A079-24CCCAE043A7}"
+	ProjectSection(SolutionItems) = preProject
+		Table_Schemas.sql = Table_Schemas.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
