@@ -1,5 +1,6 @@
 ﻿USE [master]
 GO
+
 /****** Object:  Database [ServiceStackDemoDB]    Script Date: 3/10/2017 4:38:26 PM ******/
 CREATE DATABASE [ServiceStackDemoDB]
  CONTAINMENT = NONE
