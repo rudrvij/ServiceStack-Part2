@@ -1,10 +1,7 @@
 ﻿using Prototype.EmployeeService.Contracts;
 using Prototype.EmployeeService.Implementation.Repository;
-using System;
+using ServiceStack;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Prototype.EmployeeService.Implementation
 {
@@ -12,12 +9,15 @@ namespace Prototype.EmployeeService.Implementation
     {
         public IEmployeeRepository repo { get; set; }
 
-        public GetEmployeesResponse Get(GetEmployeesRequest request)
+        public List<Employee> Get(GetEmployees request)
+        {            
+            return repo.GetEmployeesByCompany(request.CompanyId);
+        }
+        public int Post(AddEmployee request)
         {
-            return new GetEmployeesResponse()
-            {
-                Employees = repo.GetEmployeesByCompany(request.CompanyId)
-            };
+            //Using ServiceStack's Mapping
+            Employee employeeToAdd = new Employee().PopulateWith(request);
+            return repo.AddEmployee(employeeToAdd, request.CompanyId);
         }
     }
 }

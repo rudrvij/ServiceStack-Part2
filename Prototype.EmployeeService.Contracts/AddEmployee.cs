@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Prototype.EmployeeService.Contracts
 {
-    [Route("/employees/", "POST")]
-    public class AddEmployeeRequest : IPost, IReturn<AddEmployeeResponse>
+    [Route("/{CompanyId}/employees/", "POST")]
+    public class AddEmployee : IPost, IReturn<int>
     {
-        public Employee Employee { get; set; }
-    }
-    public class AddEmployeeResponse
-    {
-        public int EmployeeId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string SSN { get; set; }
+        public string EmailAddress { get; set; }
+        public string CompanyId { get; set; }
 
-    }
+    }    
 }

@@ -18,10 +18,10 @@ namespace Prototype.UI.Controllers
             EmployeeListViewModel viewModel = new EmployeeListViewModel();
 
             JsonServiceClient client = new JsonServiceClient(GetEmployeeServiceUrl());
-            var response = client.Get<GetEmployeesResponse>("employees/ATP");
+            var response = client.Get<List<Employee>>("ATP/employees");
             if (response != null)
             {
-                viewModel.Employees = response.Employees;
+                viewModel.Employees = response;
             }
             return View(viewModel);
         }
