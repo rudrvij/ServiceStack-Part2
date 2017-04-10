@@ -1,43 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Prototype.EmployeeService.Contracts;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
+using ServiceStack;
 
 namespace Prototype.EmployeeService.Implementation.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public int AddEmployee(Employee employee, string companyId)
+        public IDbConnectionFactory DbFactory { get; set; }
+
+        public int AddEmployee(Employee employee, string companyName)
         {
-            return 100;
+            int result = 0;
+            int companyId = 0;
+
+            using (var db = DbFactory.OpenDbConnection())
+            {
+                companyId = db.Select<Pocos.Company>(p => p.CompanyName == companyName).FirstNonDefault().Id;
+
+                var v = new Pocos.Employee() { CompanyId = companyId, FirstName = employee.FirstName, LastName = employee.LastName, SSN = employee.SSN, EmailAddress = employee.EmailAddress, };
+                db.Save(v);
+                result = v.Id;
+            }
+            return result;
         }
 
         public List<Employee> GetEmployeesByCompany(string companyId)
         {
-            if(companyId == "ATP")
+            List<Employee> employeeList = null;
+            using (var db = DbFactory.OpenDbConnection())
             {
-                return new List<Employee>()
-                {
-                    new Employee() { EmployeeId = 1, FirstName = "Roger", LastName ="Federer", SSN="111-11-1111"  },
-                    new Employee() { EmployeeId = 2, FirstName = "Novak", LastName ="Djokovic", SSN="222-22-2222"  },
-                    new Employee() { EmployeeId = 3, FirstName = "Rafael", LastName ="Nadal", SSN="333-33-3333"  },
-                    new Employee() { EmployeeId = 4, FirstName = "Andy", LastName ="Murray", SSN="444-44-4444"  }
-                };
+                var q = db.From<Pocos.Employee>()
+                    .Join<Pocos.Company>()
+                    .Where<Pocos.Company>(p => p.CompanyName == companyId);
+                employeeList = db.Select<Pocos.Employee>(q).ToList().ConvertAll(x => x.ConvertTo<Employee>()).ToList();
             }
-            else
-            {
-                return new List<Employee>()
-                {
-                    new Employee() { EmployeeId = 10, FirstName = "Ned", LastName ="Stark", SSN="111-11-0000"  },
-                    new Employee() { EmployeeId = 20, FirstName = "Tyrion", LastName ="Lannister", SSN="222-22-0000"  },
-                    new Employee() { EmployeeId = 30, FirstName = "John", LastName ="Snow", SSN="333-33-0000"  },
-                    new Employee() { EmployeeId = 40, FirstName = "Denerius", LastName ="Targerian", SSN="444-44-0000"  }
-
-                };
-            }
-            
+            return employeeList;            
         }
     }
 }

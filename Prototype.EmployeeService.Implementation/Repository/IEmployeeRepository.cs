@@ -10,6 +10,6 @@ namespace Prototype.EmployeeService.Implementation.Repository
     public interface IEmployeeRepository
     {
         List<Employee> GetEmployeesByCompany(string companyId);
-        int AddEmployee(Employee employee, string companyId);
+        int AddEmployee(Employee employee, string CompanyName);
     }
 }

@@ -17,7 +17,7 @@ namespace Prototype.EmployeeService.Implementation
         {
             //Using ServiceStack's Mapping
             Employee employeeToAdd = new Employee().PopulateWith(request);
-            return repo.AddEmployee(employeeToAdd, request.CompanyId);
+            return repo.AddEmployee(employeeToAdd, request.CompanyName);
         }
     }
 }

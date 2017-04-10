@@ -12,7 +12,7 @@ namespace Prototype.EmployeeService.Implementation.Validators
     {
         public AddEmployeeValidator()
         {
-            RuleFor(p => p.CompanyId).NotEmpty().WithMessage("CompanyId cannot be empty");
+            RuleFor(p => p.CompanyName).NotEmpty().WithMessage("CompanyName cannot be empty");
             RuleFor(p => p.FirstName).NotEmpty().WithMessage("FirstName cannot be empty");
             RuleFor(p => p.LastName).NotEmpty().WithMessage("Last Name cannot be empty");
             RuleFor(p => p.SSN).NotEmpty().WithMessage("Not a valid SSN");

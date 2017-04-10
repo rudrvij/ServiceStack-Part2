@@ -2,8 +2,13 @@
 using Prototype.EmployeeService.Implementation.Repository;
 using Prototype.EmployeeService.Implementation.Validators;
 using ServiceStack;
+using ServiceStack.Data;
+using ServiceStack.MiniProfiler;
+using ServiceStack.MiniProfiler.Data;
+using ServiceStack.OrmLite;
 using ServiceStack.Validation;
 using System;
+using System.Configuration;
 
 namespace Prototype.EmployeeService.Host
 {
@@ -18,8 +23,15 @@ namespace Prototype.EmployeeService.Host
 
             //Register the Validators
             container.RegisterValidators(typeof(AddEmployeeValidator).Assembly);
+            container.RegisterAs<EmployeeRepository, IEmployeeRepository>().ReusedWithin(ReuseScope.Request);
 
-            container.RegisterAs<EmployeeRepository, IEmployeeRepository>().ReusedWithin(ReuseScope.Request);          
+            //ORMLite 
+            container.Register<IDbConnectionFactory>(
+                new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["MyLocalDB"].ConnectionString, SqlServer2012Dialect.Provider)
+                {
+                    ConnectionFilter = x => new ProfiledDbConnection(x, Profiler.Current)
+                }
+                );
         }
     }
     public class Global : System.Web.HttpApplication
