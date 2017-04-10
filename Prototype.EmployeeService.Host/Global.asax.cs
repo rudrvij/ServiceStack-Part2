@@ -3,6 +3,8 @@ using Prototype.EmployeeService.Implementation.Repository;
 using Prototype.EmployeeService.Implementation.Validators;
 using ServiceStack;
 using ServiceStack.Data;
+using ServiceStack.Logging;
+using ServiceStack.Logging.NLogger;
 using ServiceStack.MiniProfiler;
 using ServiceStack.MiniProfiler.Data;
 using ServiceStack.OrmLite;
@@ -32,12 +34,17 @@ namespace Prototype.EmployeeService.Host
                     ConnectionFilter = x => new ProfiledDbConnection(x, Profiler.Current)
                 }
                 );
+            //Logging
+            container.Register<ILog>(
+                ctx => LogManager.LogFactory.GetLogger(typeof(IService))
+                );
         }
     }
     public class Global : System.Web.HttpApplication
     {
         protected void Application_Start(object sender, EventArgs e)
         {
+            LogManager.LogFactory = new NLogFactory();
             new AppHost().Init();
         }
     }
